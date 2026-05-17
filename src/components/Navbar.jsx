@@ -67,8 +67,10 @@ export default function App() {
 
                 </ul>
                 <div className="hidden items-center gap-4 md:flex">
-                    <Link href="#" className="no-underline">Login</Link>
-                    <Button size="sm" className={'bg-[#0B2F5B]'}>Sign Up</Button>
+                    <Link href="/login" className="no-underline">Login</Link>
+                    <Link href="/register" className={"no-underline"}>
+                        <Button size="sm" className={'bg-[#0B2F5B]'}>Sign Up</Button>
+                    </Link>
                 </div>
             </header>
             {isMenuOpen && (
