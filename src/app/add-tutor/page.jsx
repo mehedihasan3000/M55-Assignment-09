@@ -1,5 +1,6 @@
 'use client'
 import { Button, Input, Label, TextField, Select, ListBox, Calendar, DateField, DatePicker, TextArea } from '@heroui/react';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 const AddTutorPage = () => {
@@ -18,7 +19,10 @@ const AddTutorPage = () => {
         })
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
+        if (data.insertedId) {
+            redirect('/tutors');
+        }
     };
 
     return (
@@ -33,7 +37,7 @@ const AddTutorPage = () => {
                     <Input placeholder="Photo Url" />
                 </TextField>
 
-                <Select className="w-full" placeholder="Select one">
+                <Select className="w-full" name='subject' placeholder="Select one">
                     <Label>Select a subject</Label>
                     <Select.Trigger>
                         <Select.Value />
@@ -41,19 +45,19 @@ const AddTutorPage = () => {
                     </Select.Trigger>
                     <Select.Popover>
                         <ListBox>
-                            <ListBox.Item id="math" textValue="Math">
+                            <ListBox.Item id="Math" textValue="Math">
                                 Math
                                 <ListBox.ItemIndicator />
                             </ListBox.Item>
-                            <ListBox.Item id="physics" textValue="Physics">
+                            <ListBox.Item id="Physics" textValue="Physics">
                                 Physics
                                 <ListBox.ItemIndicator />
                             </ListBox.Item>
-                            <ListBox.Item id="english" textValue="English">
+                            <ListBox.Item id="English" textValue="English">
                                 English
                                 <ListBox.ItemIndicator />
                             </ListBox.Item>
-                            <ListBox.Item id="computer" textValue="Computer">
+                            <ListBox.Item id="Computer" textValue="Computer">
                                 Computer
                                 <ListBox.ItemIndicator />
                             </ListBox.Item>
@@ -121,6 +125,7 @@ const AddTutorPage = () => {
                         id="textarea-rows-3"
                         placeholder="3 years teaching experience"
                         rows={3}
+                        name='experience'
                     />
                 </div>
 
@@ -129,7 +134,7 @@ const AddTutorPage = () => {
                     <Input placeholder="Massachuasets" />
                 </TextField>
 
-                <Select className="w-full" placeholder="Select one">
+                <Select className="w-full" name='mode' placeholder="Select one">
                     <Label>Teaching Mode</Label>
                     <Select.Trigger>
                         <Select.Value />

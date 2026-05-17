@@ -1,0 +1,102 @@
+import Image from "next/image";
+import { Button } from "@heroui/react";
+
+export default async function TutorDetailsPage({params}) {
+    const {id} = await params;
+    const res = await fetch(`http://localhost:8000/tutors/${id}`);
+    const tutor = await res.json();
+
+    const { _id, name, photo, subject, daysandtime, fee, date, slot, experience, institution, location, mode } = tutor;
+
+    return (
+        <div className="min-h-screen bg-[#f5f5f5] px-4 py-10 lg:px-10">
+            <div className="mx-auto max-w-7xl rounded-[32px] border border-gray-200 bg-[#f7f7f7] p-6 shadow-md lg:p-10">
+
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+
+                    {/* Left Side Image */}
+                    <div className="overflow-hidden rounded-[28px]">
+                        <Image
+                            src={photo}
+                            alt={name}
+                            width={900}
+                            height={700}
+                            className="h-full w-full object-cover"
+                        />
+                    </div>
+
+                    {/* Right Side Content */}
+                    <div className="flex flex-col justify-center">
+
+                        {/* Name */}
+                        <h1 className="text-4xl font-bold text-[#0B0B0B] lg:text-5xl">
+                            {name}
+                        </h1>
+
+                        {/* Subject */}
+                        <p className="mt-3 text-2xl text-gray-500">
+                            {subject}
+                        </p>
+
+                        {/* Tutor Info */}
+                        <div className="mt-10 space-y-5 text-lg text-black">
+
+                            <p>
+                                <span className="font-bold">Institution:</span>{" "}
+                                {institution}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">Experience:</span>{" "}
+                                {experience}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">Location:</span>{" "}
+                                {location}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">Mode:</span>{" "}
+                                {mode}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">
+                                    Available & Time Slot:
+                                </span>{" "}
+                                {daysandtime}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">Hourly Fee:</span>{" "}
+                                {fee}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">Remaining Slots:</span>{" "}
+                                {slot}
+                            </p>
+
+                            <p>
+                                <span className="font-bold">
+                                    Session Start Date:
+                                </span>{" "}
+                                {date}
+                            </p>
+                        </div>
+
+                        {/* Button */}
+                        <div className="mt-10">
+                            <Button
+                                className="h-14 rounded-2xl bg-[#0B2F5B] px-10 text-lg font-semibold text-white hover:opacity-90"
+                            >
+                                Book Session
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
