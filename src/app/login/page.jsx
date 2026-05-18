@@ -1,6 +1,9 @@
 "use client";
+import { authClient } from "@/lib/auth-client";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
@@ -8,7 +11,22 @@ export default function RegisterPage() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const tutorData = Object.fromEntries(formData.entries());
-        //
+        
+        const { data, error } = await authClient.signIn.email({
+            ...tutorData,
+        }, {
+            onRequest: (ctx) => {
+                // setLoading(true);
+            },
+            onSuccess: (ctx) => {
+                // setLoading(false);
+                redirect('/');
+            },
+            onError: (ctx) => {
+                // setLoading(false);
+                toast.error(ctx.error.message);
+            },
+        })
     };
 
     return (
@@ -57,6 +75,7 @@ export default function RegisterPage() {
 
             <div className="flex gap-2">
                 <Button
+                type="submit"
                     fullWidth
                     size="sm"
                     radius="lg"

@@ -1,6 +1,8 @@
 "use client";
+import { authClient } from "@/lib/auth-client";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
@@ -8,7 +10,21 @@ export default function RegisterPage() {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const tutorData = Object.fromEntries(formData.entries());
-        //
+
+        const { data, error } = await authClient.signUp.email({
+            ...tutorData
+        }, {
+            onRequest: (ctx) => {
+                //show loading
+            },
+            onSuccess: (ctx) => {
+                redirect('/')
+            },
+            onError: (ctx) => {
+                // display the error message
+                alert(ctx.error.message);
+            },
+        });
     };
 
     return (
@@ -27,7 +43,7 @@ export default function RegisterPage() {
                 <Input placeholder="John Doe" />
                 <FieldError />
             </TextField>
-            <TextField name="photo" type="url">
+            <TextField name="image" type="url">
                 <Label>Photo</Label>
                 <Input placeholder="Photo Url" />
                 <FieldError />
@@ -76,6 +92,7 @@ export default function RegisterPage() {
 
             <div className="flex gap-2">
                 <Button
+                    type="submit"
                     fullWidth
                     size="sm"
                     radius="lg"
