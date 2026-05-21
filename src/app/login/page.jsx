@@ -29,6 +29,12 @@ export default function RegisterPage() {
         })
     };
 
+    const signIn = async () => {
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    };
+
     return (
         <Form className="flex max-w-xl mx-auto flex-col gap-4 p-2 mt-7" onSubmit={onSubmit}>
             <TextField
@@ -94,6 +100,7 @@ export default function RegisterPage() {
 
             {/* Google Button */}
             <Button
+                onClick={signIn}
                 fullWidth
                 variant="outline"
                 radius="lg"

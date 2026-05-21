@@ -1,4 +1,5 @@
 'use client'
+import { authClient } from '@/lib/auth-client';
 import { Button, Input, Label, TextField, Select, ListBox, Calendar, DateField, DatePicker, TextArea } from '@heroui/react';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -10,10 +11,13 @@ const AddTutorPage = () => {
         const formData = new FormData(e.currentTarget);
         const tutorData = Object.fromEntries(formData.entries());
 
-        const res = await fetch('http://localhost:8000/add-tutor', {
+        const { data: tokenData } = await authClient.token();
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/add-tutor`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(tutorData)
         })

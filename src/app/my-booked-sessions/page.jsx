@@ -1,0 +1,45 @@
+import UpdateStatusField from '@/components/UpdateStatusField';
+import { Table } from '@heroui/react';
+import React from 'react';
+
+export const dynamic = 'force-dynamic';
+
+const MyBookedSession = async () => {
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/book-session`);
+    const bookSessions = await res.json();
+    // console.log('booksessions', bookSessions);
+
+    return (
+        <Table variant="secondary">
+            <Table.ScrollContainer>
+                <Table.Content aria-label="Team members" className="min-w-150">
+                    <Table.Header>
+                        <Table.Column isRowHeader>Name</Table.Column>
+                        <Table.Column>Phone</Table.Column>
+                        <Table.Column>Tutor Name</Table.Column>
+                        <Table.Column>Email</Table.Column>
+                        <Table.Column>Status</Table.Column>
+                        <Table.Column>Cancel</Table.Column>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            bookSessions.map(item => <Table.Row key={item._id}>
+                            <Table.Cell>{item.name}</Table.Cell>
+                            <Table.Cell>{item.phone}</Table.Cell>
+                            <Table.Cell>{item.tutorname}</Table.Cell>
+                            <Table.Cell>{item.email}</Table.Cell>
+                            <Table.Cell>{item.statusX}</Table.Cell>
+                            <Table.Cell className={'text-red-500'}>
+                                <UpdateStatusField id={item._id} />
+                            </Table.Cell>
+                        </Table.Row>)
+                        }
+                    </Table.Body>
+                </Table.Content>
+            </Table.ScrollContainer>
+        </Table>
+    );
+};
+
+export default MyBookedSession;

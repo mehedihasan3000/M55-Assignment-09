@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { Button } from "@heroui/react";
+import BookSession from "@/components/BookSessionModal";
+
+export const dynamic = 'force-dynamic';
 
 export default async function TutorDetailsPage({params}) {
     const {id} = await params;
-    const res = await fetch(`http://localhost:8000/tutors/${id}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutors/${id}`);
     const tutor = await res.json();
 
     const { _id, name, photo, subject, daysandtime, fee, date, slot, experience, institution, location, mode } = tutor;
@@ -88,11 +91,13 @@ export default async function TutorDetailsPage({params}) {
 
                         {/* Button */}
                         <div className="mt-10">
-                            <Button
+                            {/* <Button
                                 className="h-14 rounded-2xl bg-[#0B2F5B] px-10 text-lg font-semibold text-white hover:opacity-90"
                             >
                                 Book Session
-                            </Button>
+                            </Button> */}
+
+                            <BookSession tutorName={name} />
                         </div>
                     </div>
                 </div>

@@ -1,9 +1,30 @@
 'use client'
 import { useState } from "react";
-import { Link, Button } from "@heroui/react";
+import { Link, Button, Avatar } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
-export default function App() {
+export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const router = useRouter();
+
+    const {
+        data: session
+    } = authClient.useSession()
+
+    const user = session?.user;
+    // console.log('user:', user)
+
+    const handleSignOut = async () => {
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/");
+                },
+            },
+        });
+    }
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
@@ -53,25 +74,42 @@ export default function App() {
                             Tutors
                         </Link>
                     </li>
-                    <>
-                        <li>
-                            <Link href="/add-tutor" className="no-underline">Add Tutor</Link>
-                        </li>
-                        <li>
-                            <Link href="/my-tutor" className="no-underline">My Tutors</Link>
-                        </li>
-                        <li>
-                            <Link href="/my-booked-sessions" className="no-underline">My Booked Sessions</Link>
-                        </li>
-                    </>
+                    {user &&
+                        <>
+                            <li>
+                                <Link href="/add-tutor" className="no-underline">Add Tutor</Link>
+                            </li>
+                            <li>
+                                <Link href="/my-tutor" className="no-underline">My Tutors</Link>
+                            </li>
+                            <li>
+                                <Link href="/my-booked-sessions" className="no-underline">My Booked Sessions</Link>
+                            </li>
+                        </>
+                    }
 
                 </ul>
-                <div className="hidden items-center gap-4 md:flex">
-                    <Link href="/login" className="no-underline">Login</Link>
-                    <Link href="/register" className={"no-underline"}>
-                        <Button size="sm" className={'bg-[#0B2F5B]'}>Sign Up</Button>
-                    </Link>
-                </div>
+                <ul className='flex items-center gap-3'>
+                    { user && <li><Link href={'/profile'} className={'no-underline'}>Profile</Link></li> }
+                    <>
+                        {
+                            user ?
+                                <>
+                                    <Link href={'/profile'}><Avatar>
+                                        <Avatar.Image alt={user?.name} src={user?.image} referrerPolicy='no-referrer' />
+                                        <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+                                    </Avatar></Link>
+                                    <Button onClick={handleSignOut} variant='danger' className={'rounded-none'}>Logout</Button>
+                                </>
+                                :
+                                <>
+                                    <li><Link href={'/login'} className={'no-underline'}>Login</Link></li>
+                                    <li><Link href={'/register'} className={'no-underline'}>Register</Link></li>
+                                </>
+                        }
+                    </>
+                </ul>
+
             </header>
             {isMenuOpen && (
                 <div className="border-t border-separator md:hidden">
