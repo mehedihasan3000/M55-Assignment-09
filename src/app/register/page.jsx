@@ -28,7 +28,7 @@ export default function RegisterPage() {
     };
 
     const signIn = async () => {
-        await authClient.signUp.social({
+        await authClient.signIn.social({
             provider: "google",
         });
     };

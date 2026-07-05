@@ -6,10 +6,17 @@ import React from 'react';
 
 const AddTutorPage = () => {
 
+    const {
+            data: session
+        } = authClient.useSession()
+    
+        const user = session?.user;
+
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const tutorData = Object.fromEntries(formData.entries());
+        tutorData.userId = user?.id;
 
         const { data: tokenData } = await authClient.token();
 

@@ -16,6 +16,7 @@ export default function BookSession({ tutorName }) {
         const formData = new FormData(e.currentTarget);
         const bookSessionData = Object.fromEntries(formData.entries());
         bookSessionData.statusX = 'Confirmed';
+        bookSessionData.userId = user?.id;
 
         // console.log(bookSessionData);
         // const { data: tokenData } = await authClient.token();

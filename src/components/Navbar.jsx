@@ -1,11 +1,21 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, Button, Avatar } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { FiSun, FiMoon } from "react-icons/fi";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const { theme, setTheme, resolvedTheme } = useTheme();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // if (!mounted) return null;
 
     const router = useRouter();
 
@@ -108,6 +118,7 @@ export default function Navbar() {
                                 </>
                         }
                     </>
+                    <li><Button onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')} variant='outline' className={'rounded-none'}>{mounted ? resolvedTheme === 'light' ? <FiMoon /> : <FiSun /> : null} {resolvedTheme === 'light' ? 'Dark' : 'Light'} </Button></li>
                 </ul>
 
             </header>
